@@ -1,0 +1,16 @@
+import http.server
+import socketserver
+
+PORT = 8000
+
+class CORSRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET')
+        self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
+        return super().end_headers()
+
+with socketserver.TCPServer(("", PORT), CORSRequestHandler) as httpd:
+    print(f"Servidor rodando na porta {PORT}")
+    print("Acesse: http://localhost:8000")
+    httpd.serve_forever()
